@@ -1,0 +1,76 @@
+import { test as baseTest, Page, expect } from "@playwright/test";
+import { InventoryLocators } from './locators';
+
+export class InventoryPage {
+  readonly page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async verifyPageLoaded() {
+    await baseTest.step('Verify inventory page loaded with correct title', async () => {
+      await expect(this.page.locator(InventoryLocators.title)).toHaveText('Products');
+    });
+  }
+
+  async validateLogoText(expectedText: string) {
+    await baseTest.step(`Validate logo text is "${expectedText}"`, async () => {
+      const logoLocator = this.page.locator(InventoryLocators.logo);
+      await expect(logoLocator).toBeVisible();
+      await expect(logoLocator).toHaveText(expectedText);
+    });
+  }
+
+  async validateInventoryCount(minCount: number = 5) {
+    await baseTest.step(`Validate inventory count is greater than ${minCount}`, async () => {
+      const items = this.page.locator(InventoryLocators.inventoryItems);
+      const count = await items.count();
+      expect(count).toBeGreaterThan(minCount);
+    });
+  }
+
+  async validateEachInventoryItem() {
+    const items = this.page.locator(InventoryLocators.inventoryItems);
+    const count = await items.count();
+
+    for (let i = 0; i < count; i++) {
+      const item = items.nth(i);
+
+      const image = item.locator(InventoryLocators.inventoryItemImage);
+      const title = item.locator(InventoryLocators.inventoryItemName);
+      const desc = item.locator(InventoryLocators.inventoryItemDesc);
+      const price = item.locator(InventoryLocators.inventoryItemPrice);
+
+      // Get the product title text to use in step description
+      const productName = await title.innerText();
+
+      await baseTest.step(`Validate product: ${productName}`, async () => {
+        await expect(image, `Image should be visible for ${productName}`).toBeVisible();
+        await expect(title, `Title should not be empty for ${productName}`).not.toBeEmpty();
+        await expect(desc, `Description should not be empty for ${productName}`).not.toBeEmpty();
+        await expect(price, `Price should not be empty for ${productName}`).not.toBeEmpty();
+      });
+    }
+  }
+  async addToCartAndValidate(productName: string, times: number = 1) {
+  const addButton = this.page.locator(
+    `button[data-test="add-to-cart-${productName.replace(/ /g, "-").toLowerCase()}"]`
+  );
+
+  const cartBadge = this.page.locator('.shopping_cart_badge');
+
+  let before = await cartBadge.isVisible()
+    ? parseInt(await cartBadge.innerText())
+    : 0;
+
+  for (let i = 0; i < times; i++) {
+    await addButton.click();
+
+    const after = parseInt(await cartBadge.innerText());
+    expect(after).toBe(before + 1);
+    before = after; // update before count for next iteration
+  }
+}
+
+}
