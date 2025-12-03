@@ -53,23 +53,15 @@ export class InventoryPage {
       });
     }
   }
-  async addToCartAndValidate(productName: string, times: number = 1) {
-  const addButton = this.page.locator(
-    `button[data-test="add-to-cart-${productName.replace(/ /g, "-").toLowerCase()}"]`
-  );
+  async validatePriceFormat() {
+  const priceElements = this.page.locator('.inventory_item_price');
+  const count = await priceElements.count();
 
-  const cartBadge = this.page.locator('.shopping_cart_badge');
+  const priceRegex = /^\$\d+(\.\d{1,2})?$/; 
 
-  let before = await cartBadge.isVisible()
-    ? parseInt(await cartBadge.innerText())
-    : 0;
-
-  for (let i = 0; i < times; i++) {
-    await addButton.click();
-
-    const after = parseInt(await cartBadge.innerText());
-    expect(after).toBe(before + 1);
-    before = after; // update before count for next iteration
+  for (let i = 0; i < count; i++) {
+    const priceText = await priceElements.nth(i).innerText();
+    expect(priceRegex.test(priceText)).toBe(true);
   }
 }
 

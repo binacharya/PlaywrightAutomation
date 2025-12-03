@@ -26,6 +26,10 @@ test.describe('Inventory Page Validations', () => {
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.validateEachInventoryItem();
   });
+test('Validate price format on inventory page', async ({ page }) => {
+  const inventoryPage = new InventoryPage(page);
 
+  await inventoryPage.validatePriceFormat();
+});
 
 });
