@@ -50,26 +50,82 @@ npx playwright install
 
 Environment-specific configurations are managed in `config/env.ts`. Update this file to set your target environment URLs and credentials.
 
+## Environment Setup
+
+### Configure Environments
+
+Update `config/env.ts` to specify the URLs and credentials for each environment:
+- **dev** - Development environment
+- **uat** - User Acceptance Testing environment
+- **prod** - Production environment
+
+### Create Environment Variables File
+
+Copy `.env.example` to `.env` and update with your environment-specific credentials:
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your credentials:
+```
+DEV_USERNAME=your_dev_user
+DEV_PASSWORD=your_dev_password
+
+UAT_USERNAME=your_uat_user
+UAT_PASSWORD=your_uat_password
+
+PROD_USERNAME=your_prod_user
+PROD_PASSWORD=your_prod_password
+```
+
 ## Running Tests
+
+### Run tests by environment
+
+```bash
+# Development environment (default)
+npm run test:dev
+
+# UAT environment
+npm run test:uat
+
+# Production environment
+npm run test:prod
+```
 
 ### Run all tests
 ```bash
-npx playwright test
+npm test
+```
+
+### Run tests in headed mode (see browser)
+```bash
+# Default environment
+npm run test:headed
+
+# Specific environment
+npm run test:headed:dev
+npm run test:headed:uat
+npm run test:headed:prod
+```
+
+### Run tests in debug mode
+```bash
+# Default environment
+npm run test:debug
+
+# Specific environment
+npm run test:debug:dev
+npm run test:debug:uat
+npm run test:debug:prod
 ```
 
 ### Run tests in a specific file
 ```bash
 npx playwright test tests/login.spec.ts
-```
 
-### Run tests in headed mode (see browser)
-```bash
-npx playwright test --headed
-```
-
-### Run tests in debug mode
-```bash
-npx playwright test --debug
+# With environment variable
+TEST_ENV=dev npx playwright test tests/login.spec.ts
 ```
 
 ### Run tests with specific browser
@@ -132,6 +188,34 @@ This project is ready for integration with CI/CD pipelines. Configure your pipel
 3. Run tests with `npx playwright test`
 4. Archive test reports
 
+## Environment-Specific Testing
+
+The test suite supports running against different environments using the `TEST_ENV` variable:
+
+- **dev** - For testing against development environment
+- **uat** - For testing against UAT environment
+- **prod** - For testing against production environment (default)
+
+### Available npm Scripts
+
+```json
+{
+  "test": "playwright test",
+  "test:dev": "TEST_ENV=dev playwright test",
+  "test:uat": "TEST_ENV=uat playwright test",
+  "test:prod": "TEST_ENV=prod playwright test",
+  "test:headed": "playwright test --headed",
+  "test:headed:dev": "TEST_ENV=dev playwright test --headed",
+  "test:headed:uat": "TEST_ENV=uat playwright test --headed",
+  "test:headed:prod": "TEST_ENV=prod playwright test --headed",
+  "test:debug": "playwright test --debug",
+  "test:debug:dev": "TEST_ENV=dev playwright test --debug",
+  "test:debug:uat": "TEST_ENV=uat playwright test --debug",
+  "test:debug:prod": "TEST_ENV=prod playwright test --debug",
+  "report": "playwright show-report"
+}
+```
+
 ## Contributing
 
 When adding new tests:
@@ -139,6 +223,7 @@ When adding new tests:
 2. Keep locators in `locators.ts` files
 3. Follow existing naming conventions
 4. Add meaningful test descriptions
+5. Ensure tests work across all environments (dev, uat, prod)
 
 ## Support
 

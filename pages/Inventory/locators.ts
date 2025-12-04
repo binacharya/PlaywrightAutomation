@@ -6,4 +6,6 @@ export const InventoryLocators = {
   inventoryItemName: '.inventory_item_name',
   inventoryItemDesc: '.inventory_item_desc',
   inventoryItemPrice: '.inventory_item_price',
+  sortDropdown: '[data-test="product-sort-container"]',
+
 };

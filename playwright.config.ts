@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
-import { ENV_URLS  } from "./config/env";
-const environment = process.env.ENV || "prod";
+import { ENV_URLS, environment } from "./config/env";
 const baseURL = ENV_URLS[environment];
 /**
  * Read environment variables from file.

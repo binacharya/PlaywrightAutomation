@@ -64,5 +64,20 @@ export class InventoryPage {
     expect(priceRegex.test(priceText)).toBe(true);
   }
 }
+async validatePriceHighToLowSort() {
+    
+    await this.page.locator(InventoryLocators.sortDropdown).selectOption('hilo');
+    await this.page.waitForTimeout(500);
 
+    // Get all price texts like "$49.99"
+    const pricesText = await this.page.locator(InventoryLocators.inventoryItemPrice).allTextContents();
+    console.log("Prices on page:", pricesText);
+    // Convert to numbers e.g. 49.99
+    const prices = pricesText.map(price => parseFloat(price.replace('$', '')));
+    console.log("Prices on page:", prices);
+    // Check if array is sorted descending
+    for (let i = 0; i < prices.length - 1; i++) {
+      expect(prices[i]).toBeGreaterThanOrEqual(prices[i + 1]);
+    }
+  }
 }

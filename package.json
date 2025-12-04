@@ -2,13 +2,28 @@
   "name": "playwrightlearning",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:dev": "cross-env TEST_ENV=dev playwright test",
+    "test:uat": "cross-env TEST_ENV=uat playwright test",
+    "test:prod": "cross-env TEST_ENV=prod playwright test",
+    "test:headed": "playwright test --headed",
+    "test:headed:dev": "cross-env TEST_ENV=dev playwright test --headed",
+    "test:headed:uat": "cross-env TEST_ENV=uat playwright test --headed",
+    "test:headed:prod": "cross-env TEST_ENV=prod playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:debug:dev": "cross-env TEST_ENV=dev playwright test --debug",
+    "test:debug:uat": "cross-env TEST_ENV=uat playwright test --debug",
+    "test:debug:prod": "cross-env TEST_ENV=prod playwright test --debug",
+    "report": "playwright show-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-	"@playwright/test": "^1.57.0",
-	"@types/node": "^24.10.1"
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.1",
+    "cross-env": "^10.1.0"
   }
 }

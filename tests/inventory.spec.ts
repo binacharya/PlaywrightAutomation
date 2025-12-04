@@ -32,4 +32,9 @@ test('Validate price format on inventory page', async ({ page }) => {
   await inventoryPage.validatePriceFormat();
 });
 
+test('Validate prices sorted High to Low', async ({ page }) => {
+  const inventoryPage = new InventoryPage(page);
+  await inventoryPage.validatePriceHighToLowSort();
+});
+
 });
