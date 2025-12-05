@@ -50,7 +50,7 @@ export class SortUtils {
     // Validate parsing
     dates.forEach((d, idx) => {
       if (isNaN(d.getTime())) {
-        throw new Error(`❌ Invalid date format at index ${idx}: "${items[idx]}"`);
+        throw new Error(`Invalid date format at index ${idx}: "${items[idx]}"`);
       }
     });
 

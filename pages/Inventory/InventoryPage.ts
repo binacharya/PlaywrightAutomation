@@ -149,6 +149,25 @@ async validateCartCountIncrementsForAllItems() {
   }
 }
 
+async validateHoverColorChange(productName: string) {
+    const itemName = this.page.locator('.inventory_item_name', { hasText: productName });
+
+    // Get color before hover
+    const colorBefore = await itemName.evaluate(el => window.getComputedStyle(el).color);
+
+    // Hover on the item name
+    await itemName.hover();
+
+    // Get color after hover
+    const colorAfter = await itemName.evaluate(el => window.getComputedStyle(el).color);
+
+    // Log colors (optional)
+    console.log(`Color before hover: ${colorBefore}`);
+    console.log(`Color after hover: ${colorAfter}`);
+
+    // Validate that color changed on hover
+    expect(colorBefore).not.toBe(colorAfter);
+  }
 
 
 }
