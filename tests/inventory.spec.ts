@@ -37,4 +37,10 @@ test('Validate prices sorted High to Low', async ({ page }) => {
   await inventoryPage.validatePriceHighToLowSort();
 });
 
+test('Validate Z → A sorting', async ({ page }) => {
+  const inventoryPage = new InventoryPage(page);
+  await inventoryPage.validateSortZtoA();
+});
+
+
 });

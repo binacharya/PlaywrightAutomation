@@ -1,5 +1,6 @@
 import { test as baseTest, Page, expect } from "@playwright/test";
 import { InventoryLocators } from './locators';
+import { SortUtils } from '../../utils/sortUtils';
 
 export class InventoryPage {
   readonly page: Page;
@@ -80,4 +81,23 @@ async validatePriceHighToLowSort() {
       expect(prices[i]).toBeGreaterThanOrEqual(prices[i + 1]);
     }
   }
+  async validateSortZtoA() {
+  await this.page.locator(InventoryLocators.sortDropdown).selectOption('za');
+
+  await SortUtils.validateTextSort(
+    this.page,
+    InventoryLocators.inventoryItemName,
+    'desc'
+  );
+}
+
+async validateSortHighToLow() {
+  await this.page.locator(InventoryLocators.sortDropdown).selectOption('hilo');
+
+  await SortUtils.validateNumberSort(
+    this.page,
+    InventoryLocators.inventoryItemPrice,
+    'desc'
+  );
+}
 }
