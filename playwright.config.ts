@@ -37,7 +37,7 @@ export default defineConfig({
     headless: false,
     screenshot:'on',
     baseURL: baseURL,
-    
+    slowMo: process.env.CI ? 0 : 200,
   },
 
   /* Configure projects for major browsers */

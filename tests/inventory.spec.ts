@@ -41,6 +41,16 @@ test('Validate Z → A sorting', async ({ page }) => {
   const inventoryPage = new InventoryPage(page);
   await inventoryPage.validateSortZtoA();
 });
+test('validate Cartcount increase', async ({ page }) => {
+ const inventoryPage = new InventoryPage(page);
+await inventoryPage.validateCartCountIncrease();
 
+});
+
+test('validate Cartcount increase incrementally', async ({ page }) => {
+ const inventoryPage = new InventoryPage(page);
+await inventoryPage.validateCartCountIncrementsForAllItems();
+
+});
 
 });

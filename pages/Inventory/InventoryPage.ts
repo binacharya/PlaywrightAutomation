@@ -100,4 +100,55 @@ async validateSortHighToLow() {
     'desc'
   );
 }
+async validateCartCountIncrease() {
+    const cartBadge = this.page.locator('.shopping_cart_badge');
+
+    let beforeCount = 0;
+    if (await cartBadge.isVisible()) {
+      beforeCount = parseInt(await cartBadge.innerText());
+    }
+
+    // Click first add to cart button
+    const firstAddButton = this.page.locator('button[data-test^="add-to-cart-"]').first();
+    await firstAddButton.click();
+
+    await cartBadge.waitFor({ state: 'visible' });
+
+    const afterCount = parseInt(await cartBadge.innerText());
+
+    expect(afterCount).toBe(beforeCount + 1);
+  }
+async validateCartCountIncrementsForAllItems() {
+  const cartBadge = this.page.locator('.shopping_cart_badge');
+  
+  // Get all add-to-cart buttons once (regardless of visibility)
+  const addButtons = await this.page.locator('button[data-test^="add-to-cart-"]').elementHandles();
+
+  const totalItems = addButtons.length;
+
+  let expectedCount = 0;
+
+  for (let i = 0; i < totalItems; i++) {
+    // Read current cart count or 0 if badge is hidden
+    let beforeCount = 0;
+    if (await cartBadge.isVisible()) {
+      beforeCount = parseInt(await cartBadge.innerText());
+    }
+
+    // Scroll button into view & click via element handle
+    await addButtons[i].scrollIntoViewIfNeeded();
+    await addButtons[i].click();
+
+    expectedCount = beforeCount + 1;
+
+    // Wait for cart badge to update
+    await cartBadge.waitFor({ state: 'visible' });
+
+    const afterCount = parseInt(await cartBadge.innerText());
+    expect(afterCount).toBe(expectedCount);
+  }
+}
+
+
+
 }
