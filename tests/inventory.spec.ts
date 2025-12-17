@@ -55,7 +55,7 @@ await inventoryPage.validateCartCountIncrementsForAllItems();
 test('Validate product name color changes on hover', async ({ page }) => {
   const inventoryPage = new InventoryPage(page);
 
-  // Replace with a valid product name from the page
+ 
   const productName = 'Sauce Labs Backpack';
   await inventoryPage.validateHoverColorChange(productName);
 });
