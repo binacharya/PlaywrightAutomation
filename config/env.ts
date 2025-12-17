@@ -34,7 +34,7 @@ const ENV_CONFIGS: Record<string, EnvironmentConfig> = {
   }
 };
 
-// Default to 'dev' if not specified
+// Default to 'prod' if not specified
 export const environment = (process.env.TEST_ENV || "prod").toLowerCase() as keyof typeof ENV_CONFIGS;
 
 // Validate environment
